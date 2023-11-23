@@ -20,11 +20,13 @@ class submit_to_notion:
             "parent": {"type": "database_id","database_id": self.database_id},
             "properties": {
                 "title": { "title": [{"type": "text","text": {"content": info['title']}}]},
+                "cover": {'files': [{"type": "external", "name": "cover",'external': {'url': info['pic']}}]},
                 "URL": { "url": 'https://www.bilibili.com/video/'+ video_info["bvid"]},
                 "UP主": { "rich_text": [{"type": "text","text": {"content": info['owner']['name']}}]},
                 "分区": { "select": {"name": video_info["section"]['parent_name']}},
                 'tags': {'type': 'multi_select', 'multi_select': multi_select},
-                "写入时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
+                "发布时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
+                "写入时间": { "date": {"start": time.strftime("%Y-%m-%d", time.localtime()), "end": None }},
             },
             "children": self._generate_children(info, summarized_text)
         }

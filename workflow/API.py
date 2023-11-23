@@ -39,18 +39,6 @@ def bili_tags(bvid):
         tags = []
     return tags
 
-    
-# print('标题：', data['title'])
-# print('up主：', data['owner']['name'])
-# print('播放量：', data['stat']['view'])
-
-data = bili_info(bvid)
-print('标题：', data.get('title', 'N/A'))
-print('up主：', data['owner'].get('name', 'N/A'))
-print('播放量：', data['stat'].get('view', 'N/A'))
-
-tags = bili_tags(bvid)
-print(tags)
 
 # 这里是对视频cid的获取
 def bili_player_list(bvid):

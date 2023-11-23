@@ -1,6 +1,6 @@
-# 通过API获取字幕
+<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="background copy" style="zoom: 50%;" />
 
-<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background.jpg" alt="background" style="zoom:33%;" />
+# 通过API获取字幕
 
 ## 概述
 
@@ -65,3 +65,6 @@ subtitle_url --> subtitle_json
 ## References
 - https://developers.notion.com/reference/intro
 
+- https://github.com/DavinciEvans/chatGPT-Summary-Bilibili-To-Notion
+
+- https://zhuanlan.zhihu.com/p/610250035

@@ -1,4 +1,4 @@
-<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="background copy" style="zoom: 33%;" />
+<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
 
 # 通过API获取字幕
 

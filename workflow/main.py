@@ -1,6 +1,6 @@
 from info_downloader import VideoInfoDownloader
 from subtitle_downloader import SubtitleDownloader
-from .writein import writein
+from writein import writein
     
 import argparse
 import os
@@ -20,6 +20,7 @@ def main():
     # database_id = settings.get("database_id")
     # api_key = settings.get("api_key")
     
+    cookie = None
     if os.path.isfile("./cookie"):
         with open("./cookie", "r") as f:
             cookie = f.read()
@@ -29,7 +30,7 @@ def main():
     p_num = p if p is not None else 0
     
     print(f"正在获取{bvid}的视频信息...")
-    video_info = VideoInfoDownloader(bvid).download_info()
+    video_info = VideoInfoDownloader(bvid, cookie).download_info()
     title = video_info['info']['title']
     print(f"视频标题：{title}")
     subtitle = SubtitleDownloader(bvid, p_num, cookie).download_subtitle()

@@ -19,7 +19,10 @@ class SubtitleDownloader:
         
     def _get_player_list(self):
         response = requests.get(self.pagelist_api, params = {'bvid': self.bvid})
-        cid_list = [x['cid'] for x in response.json()['data']]
+        if self.p_num == 0:
+            cid_list = response.json()['data'][0].get('cid')
+        else: 
+            cid_list = [x['cid'] for x in response.json()['data']]
         return cid_list
     
     def _get_subtitle_list(self, cid: str):

@@ -18,11 +18,8 @@ class SubtitleDownloader:
         }
         
     def _get_player_list(self):
-        response = requests.get(self.pagelist_api, params = {'bvid': self.bvid})
-        if self.p_num == 0:
-            cid_list = response.json()['data'][0].get('cid')
-        else: 
-            cid_list = [x['cid'] for x in response.json()['data']]
+        response = requests.get(self.pagelist_api, params = {'bvid': self.bvid}, headers = self.headers)
+        cid_list = [x['cid'] for x in response.json()['data']]
         return cid_list
     
     def _get_subtitle_list(self, cid: str):
@@ -41,7 +38,7 @@ class SubtitleDownloader:
         if subtitles:
             return self._request_subtitle(subtitles[0])
         else:
-            cookie = input("请输入新的cookie：")
+            cookie = input("cookie已失效，请输入新的cookie：")
             with open("./cookie", "w") as f:
                 f.write(cookie)
             self.headers['cookie'] = cookie

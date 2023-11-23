@@ -1,5 +1,7 @@
 # 通过API获取字幕
 
+<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background.jpg" alt="background" style="zoom:33%;" />
+
 ## 概述
 
 使用的API有：
@@ -44,9 +46,6 @@ subtitle_url --> subtitle_json
 
 在`Notion`中创建数据库，保存密钥
 
-`secret_w4bNzNzvVF9N6FEQ5eVSyo1frjyCpB8PWcaXtMTi5hb`
-
-<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background.jpg" alt="background" style="zoom:33%;" />
 
 本地创建database
 
@@ -62,20 +61,6 @@ subtitle_url --> subtitle_json
 | tags     | `multi select`  |
 | 发布时间 | `date`          |
 | 加入时间 | `date`          |
-
-
-
-复制链接`https://www.notion.so/kiharari/8a4650422a3c4bfc98d58c8ce863a5a5?v=b58e0bfbe42c475fb3b5e4b9a8da5022&pvs=4`
-
-其中中间的一段`8a4650422a3c4bfc98d58c8ce863a5a5`为`database_id`
-
-## ChatGPT API
-
-
-
-| NAME | KEY |
-|-----------|-----|
-| bili_info |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|
 
 ## References
 - https://developers.notion.com/reference/intro

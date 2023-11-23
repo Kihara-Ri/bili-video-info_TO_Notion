@@ -1,32 +1,41 @@
+from info_downloader import VideoInfoDownloader
+from subtitle_downloader import SubtitleDownloader
+from .writein import writein
+    
+import argparse
+import os
+class NoArgsError:
+    pass
 
-
-
+def read_command_line_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--bv", help = "获取bv号")
+    parser.add_argument("-p", help = "分p，默认为0")
+    args = parser.parse_args()
+    return (args.bv, args.p)
 def main():
-    token = 'your-token'
-    database_id = 'your-db-id'
-    while True:
-        blink = input('请输入B站视频链接：')
-        bvid = blink.split('/')[4]
-        print(f'开始处理视频信息：{bvid}')
-        prompt = '我希望你是一名专业的视频内容编辑，请你尝试修正以下视频字幕文本中的拼写错误后，将其精华内容进行总结，然后以无序列表的方式返回，不要超过5条！确保所有的句子都足够精简，清晰完整。'
-        transcript_text = bili_subtitle(bvid, bili_player_list(bvid)[0])
-        if transcript_text:
-            print('字幕获取成功')
-            seged_text = segTranscipt(transcript_text)
-            summarized_text = ''
-            i = 1
-            for entry in seged_text:
-                try:
-                    response = chat(prompt, entry)
-                    print(f'完成第{str(i)}部分摘要')
-                    i += 1
-                except:
-                    print('GPT接口摘要失败, 请检查网络连接')
-                    response = '摘要失败'
-                summarized_text += '\n'+response
-            insert2notion(token, database_id, bvid, summarized_text)
-        else:
-            print('字幕获取失败\n')
-
+    # with open("settings.json", "r") as f:
+    #     settings = json.load(f)
+    # notion_token = settings.get("notion_token")
+    # database_id = settings.get("database_id")
+    # api_key = settings.get("api_key")
+    
+    if os.path.isfile("./cookie"):
+        with open("./cookie", "r") as f:
+            cookie = f.read()
+            
+    bvid, p = read_command_line_args()
+    bvid = bvid if bvid is not None else input("请输入bvid:")
+    p_num = p if p is not None else 0
+    
+    print(f"正在获取{bvid}的视频信息...")
+    video_info = VideoInfoDownloader(bvid).download_info()
+    title = video_info['info']['title']
+    print(f"视频标题：{title}")
+    subtitle = SubtitleDownloader(bvid, p_num, cookie).download_subtitle()
+    print("字幕获取成功")
+    writein(title, subtitle)
+    print("写入成功")
+    
 if __name__ == '__main__':
     main()

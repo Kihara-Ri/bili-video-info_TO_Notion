@@ -2,3 +2,6 @@
 cookie
 **/__pycache__
 token.md
+settings.json
+*.md
+!README.md

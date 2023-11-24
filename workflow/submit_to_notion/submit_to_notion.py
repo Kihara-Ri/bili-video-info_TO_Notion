@@ -5,13 +5,14 @@ import requests
 class submit_to_notion:
     def __init__(self, token: str, database_id: str) -> None:
         self.database_id = database_id
+        # headers不要随便改动，详情看https://developers.notion.com/reference/authentication
         self.headers = {
             'Notion-Version': '2022-06-28',
-            'Authorization': 'kiharari' + token,
+            'Authorization': 'Bearer ' + token,
         }
         self.notion_api = "https://api.notion.com/v1/pages"
         
-    def inser_to_notion(self, video_info: Dict, summarized_text: str):
+    def insert_to_notion(self, video_info: Dict, summarized_text: str):
         info = video_info["info"]
         tags = video_info["tags"]
         multi_select = [{'name': tag} for tag in tags]
@@ -33,13 +34,13 @@ class submit_to_notion:
         
         for times in range(3):
                 try:
-                    notion_request = requests.post(self.notion_api, json=body, headers=self.headers)
+                    notion_request = requests.post(self.notion_api, json = body, headers = self.headers)
                     if(str(notion_request.status_code) == "200"):
                         return (notion_request.json()['url'])
                 except:
                     print(f"Notion 导入失败，准备第{times+2}次重试")
                 
-                print(notion_request.text)
+                # print(notion_request.text)
                 raise NotionConnectError("Notion 导入错误")
             
     def _generate_children(self, info: Dict, summarized_text: str):        
@@ -93,5 +94,6 @@ class submit_to_notion:
         return children
     
 
-class NotionConnectError:
-    pass
+class NotionConnectError(Exception):
+    def __init__(self, message):
+       super().__init__(message)

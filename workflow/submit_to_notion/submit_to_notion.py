@@ -12,7 +12,7 @@ class submit_to_notion:
         }
         self.notion_api = "https://api.notion.com/v1/pages"
         
-    def insert_to_notion(self, video_info: Dict, summarized_text: str, subtitle: str, cover_name):
+    def insert_to_notion(self, video_info: Dict, summarized_text: str, subtitle: str, remote_file_path):
         info = video_info["info"]
         tags = video_info["tags"]
         multi_select = [{'name': tag} for tag in tags]
@@ -24,7 +24,7 @@ class submit_to_notion:
                        },
             "properties": {
                 "title": { "title": [{"type": "text","text": {"content": info['title']}}]},
-                "cover": {'files': [{"type": "external", "name": "cover",'external': {'url': cover_name}}]},
+                "cover": {'files': [{"type": "external", "name": "cover",'external': {'url': remote_file_path}}]},
                 "URL": { "url": 'https://www.bilibili.com/video/'+ video_info["bvid"]},
                 "UP主": { "rich_text": [{"type": "text","text": {"content": info['owner']['name']}}]},
                 "分区": { "select": {"name": video_info["section"]['parent_name']}},
@@ -32,21 +32,20 @@ class submit_to_notion:
                 "发布时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
                 "写入时间": { "date": {"start": time.strftime("%Y-%m-%d", time.localtime()), "end": None }},
             },
-            "children": self._generate_children(info, summarized_text, subtitle, cover_name)
+            "children": self._generate_children(info, summarized_text, subtitle, remote_file_path)
         }
-        # 貌似无法做到循环三次？ 
-        for times in range(3):
+
+        for times in range(8):
             try:
                 notion_request = requests.post(self.notion_api, json = body, headers = self.headers)
                 if(str(notion_request.status_code) == "200"):
                     return notion_request.json()['url']
             except:
                 print(f"Notion 导入失败，将进行第{times+2}次尝试...")
+        print(notion_request.text) 
+        raise NotionConnectError("Notion 导入错误，请重新执行")
             
-            print(notion_request.text)
-        raise NotionConnectError("Notion 导入错误，请根据信息判断错误，或者重新执行")
-            
-    def _generate_children(self, info: Dict, summarized_text: str, subtitle: str, cover_name):        
+    def _generate_children(self, info: Dict, summarized_text: str, subtitle: str, remote_file_path):        
         children = [
             {
                 "object": "block",
@@ -54,7 +53,7 @@ class submit_to_notion:
                 "image": {
                     "type": "external",
                     "external": {
-                        "url": cover_name
+                        "url": remote_file_path
                     }
                 }
             },

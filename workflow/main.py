@@ -29,6 +29,10 @@ def main():
         settings = json.load(f)
     notion_token = settings.get("notion_token")
     database_id = settings.get("database_id")
+    access_key_id = settings.get("access_key_id")
+    access_key_secret = settings.get("access_key_secret")
+    bucket_name = settings.get("bucket_name")
+    endpoint = settings.get("endpoint")
     # api_key = settings.get("api_key")
     
     cookie = None
@@ -52,7 +56,7 @@ def main():
     
     subtitle = SubtitleDownloader(bvid, p_num, cookie).download_subtitle()
     print("字幕获取成功")
-    cover_name = writein(video_info, subtitle, cookie)
+    remote_file_path = writein(video_info, subtitle, cookie, endpoint, bucket_name, access_key_id, access_key_secret)
     print("写入成功")
 
 
@@ -61,7 +65,7 @@ def main():
     # print("chatGPT编写摘要成功")
     summary = video_info['info']['dynamic']
     # print("summary : ", summary)
-    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, summary, subtitle, cover_name)
+    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, summary, subtitle, remote_file_path)
     print("导入Notion成功")
     
 if __name__ == '__main__':

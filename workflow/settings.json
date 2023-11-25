@@ -1,5 +1,9 @@
 {
     "notion_token": "secret_w4bNzNzvVF9N6FEQ5eVSyo1frjyCpB8PWcaXtMTi5hb",
     "database_id": "8a4650422a3c4bfc98d58c8ce863a5a5",
-    "api_key": "secret_w4bNzNzvVF9N6FEQ5eVSyo1frjyCpB8PWcaXtMTi5hb"
+    "api_key": "secret_w4bNzNzvVF9N6FEQ5eVSyo1frjyCpB8PWcaXtMTi5hb",
+    "access_key_id": "LTAI5tAavX4vQWC3y8ojtrtB",
+    "access_key_secret": "tFf93P9p0KLjaVqdxNZeWlFOFiqiMo",
+    "bucket_name": "mdstore",
+    "endpoint": "oss-cn-beijing.aliyuncs.com"
 }

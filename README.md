@@ -62,6 +62,14 @@ subtitle_url --> subtitle_json
 | 发布时间 | `date`          |
 | 加入时间 | `date`          |
 
+## 上传至图床
+
+本项目从bilibili获取的`cover`将会上传至阿里云oss图床中
+
+markdown文本和上传至notion中的图片链接均为阿里云图床的链接
+
+但是目前notion无法访问阿里云链接
+
 ## References
 - https://developers.notion.com/reference/intro
 

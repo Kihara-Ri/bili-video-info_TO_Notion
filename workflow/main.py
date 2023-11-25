@@ -59,8 +59,8 @@ def main():
     # summary = GPT_summary(api_key, subtitle, summary_count).write_summary()
     # print("chatGPT编写摘要成功")
     
-    # submit_to_notion(notion_token, database_id).insert_to_notion(video_info, subtitle)
-    # print("导入Notion成功")
+    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, subtitle)
+    print("导入Notion成功")
     
 if __name__ == '__main__':
     main()

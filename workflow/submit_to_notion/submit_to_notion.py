@@ -29,7 +29,7 @@ class submit_to_notion:
                 "发布时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
                 "写入时间": { "date": {"start": time.strftime("%Y-%m-%d", time.localtime()), "end": None }},
             },
-            "children": self._generate_children(info, summarized_text)
+            # "children": self._generate_children(info, summarized_text)
         }
         
         for times in range(3):

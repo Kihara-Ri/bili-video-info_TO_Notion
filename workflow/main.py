@@ -61,7 +61,7 @@ def main():
     # print("chatGPT编写摘要成功")
     summary = video_info['info']['dynamic']
     # print("summary : ", summary)
-    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, summary)
+    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, summary, subtitle)
     print("导入Notion成功")
     
 if __name__ == '__main__':

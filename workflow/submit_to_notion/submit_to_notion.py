@@ -12,7 +12,7 @@ class submit_to_notion:
         }
         self.notion_api = "https://api.notion.com/v1/pages"
         
-    def insert_to_notion(self, video_info: Dict, summarized_text: str):
+    def insert_to_notion(self, video_info: Dict, summarized_text: str, subtitle: str):
         info = video_info["info"]
         tags = video_info["tags"]
         multi_select = [{'name': tag} for tag in tags]
@@ -32,21 +32,21 @@ class submit_to_notion:
                 "发布时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
                 "写入时间": { "date": {"start": time.strftime("%Y-%m-%d", time.localtime()), "end": None }},
             },
-            "children": self._generate_children(info, summarized_text)
+            "children": self._generate_children(info, summarized_text, subtitle)
         }
-        
+        # 貌似无法做到循环三次？ 
         for times in range(3):
             try:
                 notion_request = requests.post(self.notion_api, json = body, headers = self.headers)
                 if(str(notion_request.status_code) == "200"):
                     return (notion_request.json()['url'])
             except:
-                print(f"Notion 导入失败， status code: {notion_request.status_code}，准备第{times+2}次重试")
+                print(f"Notion 导入失败，准备第{times+2}次重试")
             
             print(notion_request.text)
             raise NotionConnectError("Notion 导入错误")
             
-    def _generate_children(self, info: Dict, summarized_text: str):        
+    def _generate_children(self, info: Dict, summarized_text: str, subtitle: str):        
         children = [
             {
                 "object": "block",
@@ -72,7 +72,23 @@ class submit_to_notion:
                     ]
                 }
             },
+            {
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": subtitle[:2000],# API的限制不能超过2000
+                                "link": None
+                            }
+                        }
+                    ]
+                }
+            },
         ]
+        # 添加总结
         item_list = summarized_text.split("- ")
         for item in item_list:
             if not item:
@@ -93,9 +109,30 @@ class submit_to_notion:
                 }
             }
             children.append(bullet_item)
-
+        # 添加subtitle
+        if len(subtitle) > 2000:
+            remaining_subtitle = subtitle[2000:]
+        while remaining_subtitle:
+            paragraph_block = {
+                "object": "block",
+                "type": "paragraph",
+                "paragraph": {
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content": remaining_subtitle[:2000],  # 只取前2000个字符
+                                "link": None
+                            }
+                        }
+                    ]
+                }
+            }
+            children.append(paragraph_block)
+            remaining_subtitle = remaining_subtitle[2000:]
+            
         return children
-    
+
 
 class NotionConnectError(Exception):
     def __init__(self, message):

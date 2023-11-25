@@ -24,7 +24,8 @@ def read_command_line_args():
             )
 
 def main():
-    with open("settings.json", "r") as f:
+    # 需要将json文件放在与命令行目录相同的目录下
+    with open("./workflow/settings.json", "r") as f:
         settings = json.load(f)
     notion_token = settings.get("notion_token")
     database_id = settings.get("database_id")
@@ -58,8 +59,9 @@ def main():
     
     # summary = GPT_summary(api_key, subtitle, summary_count).write_summary()
     # print("chatGPT编写摘要成功")
-    
-    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, subtitle)
+    summary = video_info['info']['dynamic']
+    # print("summary : ", summary)
+    submit_to_notion(notion_token, database_id).insert_to_notion(video_info, summary)
     print("导入Notion成功")
     
 if __name__ == '__main__':

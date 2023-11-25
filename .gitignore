@@ -3,3 +3,5 @@ cookie
 **/__pycache__
 *.md
 !README.md
+.vscode
+.ipynb_checkpoints

@@ -18,7 +18,10 @@ class submit_to_notion:
         multi_select = [{'name': tag} for tag in tags]
         
         body = {
-            "parent": {"type": "database_id","database_id": self.database_id},
+            "parent": {
+                "type": "database_id",
+                "database_id": self.database_id
+                       },
             "properties": {
                 "title": { "title": [{"type": "text","text": {"content": info['title']}}]},
                 "cover": {'files': [{"type": "external", "name": "cover",'external': {'url': info['pic']}}]},
@@ -29,19 +32,19 @@ class submit_to_notion:
                 "发布时间": {"date": {"start": time.strftime("%Y-%m-%d", time.localtime(info['pubdate'])), "end": None }},
                 "写入时间": { "date": {"start": time.strftime("%Y-%m-%d", time.localtime()), "end": None }},
             },
-            # "children": self._generate_children(info, summarized_text)
+            "children": self._generate_children(info, summarized_text)
         }
         
         for times in range(3):
-                try:
-                    notion_request = requests.post(self.notion_api, json = body, headers = self.headers)
-                    if(str(notion_request.status_code) == "200"):
-                        return (notion_request.json()['url'])
-                except:
-                    print(f"Notion 导入失败，准备第{times+2}次重试")
-                
-                # print(notion_request.text)
-                raise NotionConnectError("Notion 导入错误")
+            try:
+                notion_request = requests.post(self.notion_api, json = body, headers = self.headers)
+                if(str(notion_request.status_code) == "200"):
+                    return (notion_request.json()['url'])
+            except:
+                print(f"Notion 导入失败， status code: {notion_request.status_code}，准备第{times+2}次重试")
+            
+            print(notion_request.text)
+            raise NotionConnectError("Notion 导入错误")
             
     def _generate_children(self, info: Dict, summarized_text: str):        
         children = [

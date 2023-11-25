@@ -4,4 +4,4 @@ cookie
 *.md
 !README.md
 .vscode
-.ipynb_checkpoints
+settings.json

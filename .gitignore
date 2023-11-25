@@ -4,5 +4,4 @@ cookie
 *.md
 !README.md
 .vscode
-settings.json
 *.jpg

@@ -1,7 +1,7 @@
 .DS_Store
 cookie
 **/__pycache__
-token.md
 settings.json
 *.md
 !README.md
+!example/现代最“神秘”的男人是谁？【硬核狠人61】.md

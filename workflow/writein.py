@@ -16,7 +16,7 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
     cover_url = video_info['info']['pic']
     title = video_info['info']['title']
     # 将汉字编译为utf-8
-    cover_name = f"{quote(title, safe='')}.jpg"
+    cover_name = f"{title}.jpg"
     cover = requests.get(cover_url, headers = headers).content
     # 下载cover到本地
     with open(f"{cover_name}", 'wb') as f:
@@ -31,7 +31,7 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
         
     return remote_file_path
         
-def upload_to_aliyun(local_file_path, access_key_id, access_key_secret, bucket_name, endpoint,oss_folder = ''):
+def upload_to_aliyun(local_file_path, access_key_id, access_key_secret, bucket_name, endpoint, oss_folder = ''):
     # 远程文件路径
     if oss_folder:
         remote_file_path = f'{oss_folder}/{local_file_path}'

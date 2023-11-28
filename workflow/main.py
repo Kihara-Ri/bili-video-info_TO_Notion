@@ -56,7 +56,7 @@ def main():
     
     subtitle = SubtitleDownloader(bvid, p_num, cookie).download_subtitle()
     print("字幕获取成功")
-    remote_file_path = writein(video_info, subtitle, cookie, endpoint, bucket_name, access_key_id, access_key_secret)
+    remote_file_path = writein(video_info, subtitle, cookie, access_key_id, access_key_secret, bucket_name, endpoint)
     print("写入成功")
 
 

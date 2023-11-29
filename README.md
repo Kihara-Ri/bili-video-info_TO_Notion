@@ -137,6 +137,12 @@ bilidl <bvid> (p_num)
 
 `p_num`是可有可无的，无参数时默认为`0`
 
+## 试例
+
+![Screenshot 2023-11-29 at 21.45.05](https://mdstore.oss-cn-beijing.aliyuncs.com/Screenshot%202023-11-29%20at%2021.45.05.png)
+
+<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/Screenshot%202023-11-29%20at%2022.19.19.png" alt="Screenshot 2023-11-29 at 22.19.19"  />
+
 ## References
 
 - https://developers.notion.com/reference/intro

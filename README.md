@@ -70,7 +70,49 @@ markdown文本和上传至notion中的图片链接均为阿里云图床的链接
 
 但是目前notion无法访问阿里云链接
 
+## shell
+
+为程序添加了命令行访问的方法，实现了在任何目录下使用该命令
+
+shell脚本的文件名：`bilidl`，可以没有`.sh`后缀
+
+```shell
+#!/bin/bash
+
+if [ "$#" -eq 1 ]; then
+    python /path/to/main.py "$1"
+elif [ "$#" -eq 2 ] && [ "$2" = "p_num" ]; then
+    python /path/to/main.py "$1" p_num
+else
+    echo "Usage: bilidl.sh bvid [p_num]"
+    exit 1
+fi
+```
+
+你需要将`main.py`文件的绝对地址 `/path/to/main.py`改为在你的计算机中的绝对地址
+
+给予执行权限：
+
+```shel
+chmod +x bilidl
+```
+
+移动到系统的PATH（添加到环境变量）中：
+
+```shell
+sudo mv bilidl /usr/local/bin
+```
+
+在执行时使用如下命令：
+
+```shell
+bilidl <bvid> (p_num)
+```
+
+`p_num`是可有可无的，无参数时默认为`0`
+
 ## References
+
 - https://developers.notion.com/reference/intro
 
 - https://github.com/DavinciEvans/chatGPT-Summary-Bilibili-To-Notion

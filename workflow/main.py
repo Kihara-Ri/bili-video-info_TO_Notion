@@ -8,6 +8,7 @@ import time
 import argparse
 import json
 import os
+import sys
 
 class NoArgsError:
     pass
@@ -15,17 +16,22 @@ class NoArgsError:
 def read_command_line_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bv", help = "获取bv号")
-    parser.add_argument("-p", help = "分p，默认为0")
+    parser.add_argument("-p_num", help = "分p，默认为0")
     # parser.add_argument("--summary_count", help="需要的精简概括的数量（默认为10条）")
     args = parser.parse_args()
     return (args.bv, 
-            args.p, 
+            args.p_num, 
             # args.summary_count
             )
+    
+def find_path(file_name):
+    main_dir = os.path.dirname(os.path.realpath(__file__))
+    file_path = os.path.join(main_dir, file_name)
+    return file_path
 
 def main():
     # 需要将json文件放在与命令行目录相同的目录下
-    with open("./workflow/settings.json", "r") as f:
+    with open(f"{find_path("settings.json")}", "r") as f:
         settings = json.load(f)
     notion_token = settings.get("notion_token")
     database_id = settings.get("database_id")
@@ -36,14 +42,21 @@ def main():
     # api_key = settings.get("api_key")
     
     cookie = None
-    if os.path.isfile("./cookie"):
-        with open("./cookie", "r") as f:
+    if os.path.isfile(f"{find_path("cookie")}"):
+        with open(f"{find_path("cookie")}", "r") as f:
             cookie = f.read()
             
     # 命令行传参 bvid, p, chatGPT总结信息，目前不需要总结已去除
-    bvid, p, = read_command_line_args()
-    bvid = bvid if bvid is not None else input("请输入bvid:")
-    p_num = p if p is not None else 0
+    # bvid, p, = read_command_line_args()
+    # bvid = bvid if bvid is not None else input("请输入bvid:")
+    # p_num = p if p is not None else 0
+    
+    if len(sys.argv) < 2 or len(sys.argv) > 4:
+        print("参数错误，请输入正确的参数")
+        sys.exit(1)
+        
+    bvid = sys.argv[1]
+    p_num = int(sys.argv[2]) if len(sys.argv) == 4 and sys.argv[2] == "p_num" else 0
     
     print(f"正在获取{bvid}的视频信息...")
     video_info = VideoInfoDownloader(bvid, cookie).download_info()

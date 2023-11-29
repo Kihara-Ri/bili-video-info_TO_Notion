@@ -14,6 +14,8 @@
 详细抓取过程请见jupyter notebook
 ## workflow
 
+b站API的请求原理图：
+
 ```mermaid
 graph TD
 
@@ -42,7 +44,9 @@ json_api --> subtitle_url
 subtitle_url --> subtitle_json
 ```
 
-## 关联数据库
+## 需要做的准备
+
+### 关联数据库
 
 在`Notion`中创建数据库，保存密钥
 
@@ -62,15 +66,37 @@ subtitle_url --> subtitle_json
 | 发布时间 | `date`          |
 | 加入时间 | `date`          |
 
-## 上传至图床
+得到`notion_token`和`database_id`
+
+### 上传至图床
 
 本项目从bilibili获取的`cover`将会上传至阿里云oss图床中
 
 markdown文本和上传至notion中的图片链接均为阿里云图床的链接
 
-但是目前notion无法访问阿里云链接
+得到`access_key_id`，`access-key-secret`，`bucket_name`和`endpoint`
 
-## shell
+### 添加密钥
+
+在`workflow`目录下添加`settings.json`文件，内容如下：
+
+```json
+{
+    "notion_token": "",
+    "database_id": "",
+    "api_key": "",
+    "access_key_id": "",
+    "access_key_secret": "",
+    "bucket_name": "",
+    "endpoint": ""
+}
+```
+
+将之前得到的信息填入对应的键值对中即OK
+
+`api_key`为chatGPT的API密钥，目前功能还不完整因此不要填
+
+### shell
 
 为程序添加了命令行访问的方法，实现了在任何目录下使用该命令
 

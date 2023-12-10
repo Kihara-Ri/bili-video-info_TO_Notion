@@ -1,5 +1,7 @@
 import requests
 import os
+import subprocess
+
 
 class SubtitleDownloader:
     def __init__(self, bvid: str, p_num, cookie: str):
@@ -28,6 +30,7 @@ class SubtitleDownloader:
             ('cid', cid),
         )
         response = requests.get(self.subtitle_api, params = params, headers = self.headers)
+        # print(response.json())
         subtitles = response.json()['data']['subtitle']['subtitles']
         if subtitles:
             return ['https:' + x['subtitle_url'] for x in subtitles]
@@ -38,15 +41,23 @@ class SubtitleDownloader:
         if subtitles:
             return self._request_subtitle(subtitles[0])
         else:
-            cookie = input("cookie已失效，请输入新的cookie：")
-            with open("./cookie", "w") as f:
-                f.write(cookie)
+            cookie_path = find_path("cookie")
+            with open(f"{cookie_path}", "r") as f:
+                cookie = f.read().strip()
+            print(f"旧cookie: {cookie}")
+            input("cookie已失效，请输入新的cookie (space)...")
+            edit_cookie_with_vim()
+            
+            with open(f"{cookie_path}", "r") as f:
+                print("正在读取新的cookie...")
+                cookie = f.read().strip()
             self.headers['cookie'] = cookie
             subtitles = self._get_subtitle_list(cid)
+            print("新cookie读取成功！")
             if subtitles:
                 return self._request_subtitle(subtitles[0])
             
-        raise SubtitleDownloadError("下载失败，cookie已失效，请更换新的cookie")
+        raise SubtitleDownloadError(f"下载失败，请检查该视频是否有cc字幕，当前cookie: f{cookie}")
     
     def _request_subtitle(self, url: str):
         response = requests.get(url)
@@ -62,3 +73,23 @@ class SubtitleDownloader:
     
 class SubtitleDownloadError(Exception):
     pass
+
+
+def edit_cookie_with_vim():
+    cookie_path = find_path("cookie")
+    try:
+        if not os.path.exists(cookie_path):
+            with open(cookie_path, "w") as fp:
+                pass
+            
+        # 调用shell脚本来编辑cookie
+        subprocess.run(["vim", cookie_path], check = True)
+    except subprocess.CalledProcessError:
+        print("vim编辑cookie失败，请手动编辑cookie文件")
+    except Exception as e:
+        print(f"发生错误: {e}")
+    
+def find_path(file_name):
+    main_dir = os.path.dirname(os.path.realpath(__file__))
+    file_path = os.path.join(main_dir, file_name)
+    return file_path

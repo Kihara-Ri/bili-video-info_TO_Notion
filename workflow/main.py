@@ -15,8 +15,8 @@ class NoArgsError:
 
 def read_command_line_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bv", help = "获取bv号")
-    parser.add_argument("-p_num", help = "分p，默认为0")
+    parser.add_argument("--bvid", help = "获取bvid")
+    parser.add_argument("-p_num", help = "分p数，默认为0")
     # parser.add_argument("--summary_count", help="需要的精简概括的数量（默认为10条）")
     args = parser.parse_args()
     return (args.bv, 
@@ -30,8 +30,9 @@ def find_path(file_name):
     return file_path
 
 def main():
-    # 需要将json文件放在与命令行目录相同的目录下
-    with open(f"{find_path("settings.json")}", "r") as f:
+    settings_path = find_path("settings.json")
+    cookie_path = find_path("cookie")
+    with open(f"{settings_path}", "r") as f:
         settings = json.load(f)
     notion_token = settings.get("notion_token")
     database_id = settings.get("database_id")
@@ -42,14 +43,14 @@ def main():
     # api_key = settings.get("api_key")
     
     cookie = None
-    if os.path.isfile(f"{find_path("cookie")}"):
-        with open(f"{find_path("cookie")}", "r") as f:
+    if os.path.isfile(f"{cookie_path}"):
+        with open(f"{cookie_path}", "r") as f:
             cookie = f.read()
             
     # 命令行传参 bvid, p, chatGPT总结信息，目前不需要总结已去除
-    # bvid, p, = read_command_line_args()
+    # bvid, p_num, = read_command_line_args()
     # bvid = bvid if bvid is not None else input("请输入bvid:")
-    # p_num = p if p is not None else 0
+    # p_num = p_num if p_num is not None else 0
     
     if len(sys.argv) < 2 or len(sys.argv) > 4:
         print("参数错误，请输入正确的参数")
@@ -64,7 +65,7 @@ def main():
     print(f"视频标题: {title}")
     print(f"cover: {video_info['info']['pic']}")
     print(f"up主: {video_info['info']['owner']['name']}")
-    print(f"发布时间: {time.strftime("%Y-%m-%d", time.localtime(video_info['info']['pubdate']))}")
+    print(f"发布时间: {time.strftime('%Y-%m-%d', time.localtime(video_info['info']['pubdate']))}")
     print(f"标签: {video_info['tags']}")
     
     subtitle = SubtitleDownloader(bvid, p_num, cookie).download_subtitle()

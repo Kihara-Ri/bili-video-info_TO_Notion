@@ -45,8 +45,7 @@ def main():
     cookie = None
     if os.path.isfile(f"{cookie_path}"):
         with open(f"{cookie_path}", "r") as f:
-            cookie = f.read()
-            
+            cookie = f.read().strip() # 去掉换行符
     # 命令行传参 bvid, p, chatGPT总结信息，目前不需要总结已去除
     # bvid, p_num, = read_command_line_args()
     # bvid = bvid if bvid is not None else input("请输入bvid:")

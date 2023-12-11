@@ -43,7 +43,7 @@ class SubtitleDownloader:
         else:
             cookie_path = find_path("cookie")
             with open(f"{cookie_path}", "r") as f:
-                cookie = f.read().strip()
+                cookie = f.read().strip() # 去除换行符
             print(f"旧cookie: {cookie}")
             input("cookie已失效，请输入新的cookie (space)...")
             edit_cookie_with_vim()
@@ -57,7 +57,7 @@ class SubtitleDownloader:
             if subtitles:
                 return self._request_subtitle(subtitles[0])
             
-        raise SubtitleDownloadError(f"下载失败，请检查该视频是否有cc字幕，当前cookie: f{cookie}")
+        raise SubtitleDownloadError(f"下载失败，请检查该视频是否有cc字幕")
     
     def _request_subtitle(self, url: str):
         response = requests.get(url)
@@ -66,6 +66,10 @@ class SubtitleDownloader:
             return body
         
     def download_subtitle(self):
+        cookie_path = find_path("cookie")
+        with open(f"{cookie_path}", "r") as f:
+            cookie = f.read().strip() # 去除换行符
+        self.headers['cookie'] = cookie
         subtitle_list = self._get_subtitle(self._get_player_list()[self.p_num])
         text_list = [x['content'] for x in subtitle_list]
         text = '，'.join(text_list)

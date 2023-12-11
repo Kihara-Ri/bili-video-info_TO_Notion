@@ -1,8 +1,21 @@
-<img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
+<div align="center">
+  <img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
+</div>
 
 # 通过API获取字幕
 
 ## 概述
+
+请根据下面的命令安装依赖库
+
+```shell
+pip install oss2
+pip install requests
+```
+
+本项目包括两个部分
+
+### b站的API请求
 
 使用的API有：
 
@@ -12,7 +25,47 @@
 - 返回的`subtitle_url`，用于获取字幕
 
 详细抓取过程请见jupyter notebook
+
+### 程序运行工作流
+
+1. 命令行获取参数`bvid`，`p_num`
+2. 从程序相对目录下获取`cookie`，如果`cookie`失效，则提示使用`vim`写入`cookie`
+3. 从`settings.json`中读取`notion`和`aliyun oss`的`id`和密钥等信息
+4. 访问b站API
+   1. `bili_info`, `bili_tags`
+   2. `subtitle_downloader`
+5. 视频`cover`上传至阿里云图床（后续本地markdown文件和notion中的cover都将使用阿里云图床的url）
+6. 读取的`subtitles`写入markdown文件，文件将默认保存在执行目录下
+7. 上传至`notion`数据库
+
 ## workflow
+
+自动化流程：
+
+```mermaid
+graph LR
+prompt(prompt)
+para((bvid, p_num))
+judge{if cookie is valid ?}
+write(write in with vim)
+read(settings.json)
+check((check subtitles))
+requests(bilibili API)
+upload(upload cover)
+import((import to notion))
+
+prompt --> judge
+para --> judge
+judge --> |Yes| read
+judge --> |No first| write
+judge --> |No second| check
+write --> judge
+read --> requests
+requests --> upload
+upload --> import
+```
+
+
 
 b站API的请求原理图：
 
@@ -142,8 +195,9 @@ bilidl <bvid> (p_num)
 ![Screenshot 2023-11-29 at 21.45.05](https://mdstore.oss-cn-beijing.aliyuncs.com/Screenshot%202023-11-29%20at%2021.45.05.png)
 
 
+
 ![Screenshot 2023-11-29 at 22.19.19](https://mdstore.oss-cn-beijing.aliyuncs.com/Screenshot%202023-11-29%20at%2022.19.19.png)
-![Screenshot 2023-11-29 at 22.19.19](https://mdstore.oss-cn-beijing.aliyuncs.com/Screenshot%202023-11-29%20at%2022.19.19.png)
+
 
 ## References
 

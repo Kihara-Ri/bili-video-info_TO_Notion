@@ -26,6 +26,39 @@ pip install requests
 
 详细抓取过程请见jupyter notebook
 
+### 目录
+
+```shell
+$ tree
+.
+├── GPT_API.ipynb
+├── GUI
+│   └── GUI.py
+├── README.md
+├── bilibili_API.ipynb
+├── token.md
+└── workflow
+    ├── GPT_summary
+    │   ├── GPT_summary.py
+    │   ├── __init__.py
+    │   └── __pycache__
+    ├── bilidl
+    ├── info_downloader
+    │   ├── __init__.py
+    │   ├── info_downloader.py
+    │   └── section_info.py
+    ├── main.py
+    ├── settings.json
+    ├── submit_to_notion
+    │   ├── __init__.py
+    │   └── submit_to_notion.py
+    ├── subtitle_downloader
+    │   ├── __init__.py
+    │   ├── cookie
+    │   └── subtitle_downloader.py
+    └── writein.py
+```
+
 ### 程序运行工作流
 
 1. 命令行获取参数`bvid`，`p_num`
@@ -57,9 +90,10 @@ import((import to notion))
 prompt --> judge
 para --> judge
 judge --> |Yes| read
-judge --> |No first| write
-judge --> |No second| check
-write --> judge
+judge --> |No | write
+write --> judge2{if cookie is valid ?}
+judge2 --> |Yes| requests
+judge2 --> |No| check
 read --> requests
 requests --> upload
 upload --> import

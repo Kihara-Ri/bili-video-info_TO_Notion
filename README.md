@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="Bilibili_logo.svg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
+  <img src="Bilibili_logo.svg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;" style="zoom: 40%;" width="40%" height="40%"/> 
 </div>
 
 

@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
+  <img src="Bilibili_logo.svg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
 </div>
 
 
@@ -31,13 +31,12 @@ pip install requests
 $ tree
 .
 ├── GPT_API.ipynb
-├── GUI
+├── GUI # 将会尝试添加图形界面
 │   └── GUI.py
 ├── README.md
 ├── bilibili_API.ipynb
-├── token.md
 └── workflow
-    ├── GPT_summary
+    ├── GPT_summary # 由于各种原因GPT的部分暂时不使用，将会尝试用b站的视频助手
     │   ├── GPT_summary.py
     │   ├── __init__.py
     │   └── __pycache__
@@ -47,13 +46,13 @@ $ tree
     │   ├── info_downloader.py
     │   └── section_info.py
     ├── main.py
-    ├── settings.json
+    ├── settings.json # 里面存放的都是敏感信息，请手动添加此文件
     ├── submit_to_notion
     │   ├── __init__.py
     │   └── submit_to_notion.py
     ├── subtitle_downloader
     │   ├── __init__.py
-    │   ├── cookie
+    │   ├── cookie # 可以不添加，命令会提示使用vim添加
     │   └── subtitle_downloader.py
     └── writein.py
 ```

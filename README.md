@@ -2,9 +2,8 @@
   <img src="https://mdstore.oss-cn-beijing.aliyuncs.com/background%20copy.jpg" alt="img" title=" alt=&quot;background copy&quot; style=&quot;zoom: 20%;" style="zoom: 50%;" /> 
 </div>
 
-# 通过API获取字幕
 
-## 概述
+## 快速上手
 
 请根据下面的命令安装依赖库
 
@@ -72,7 +71,7 @@ $ tree
 7. 上传至`notion`数据库
 
 ## workflow
-
+---
 自动化流程：
 
 ```mermaid
@@ -92,13 +91,13 @@ para --> judge
 judge --> |Yes| read
 judge --> |No | write
 write --> judge2{if cookie is valid ?}
-judge2 --> |Yes| requests
+judge2 --> |Yes| read
 judge2 --> |No| check
 read --> requests
 requests --> upload
 upload --> import
 ```
-
+---
 
 
 b站API的请求原理图：
@@ -130,6 +129,8 @@ cid --> json_api
 json_api --> subtitle_url
 subtitle_url --> subtitle_json
 ```
+
+---
 
 ## 需要做的准备
 

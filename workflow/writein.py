@@ -15,21 +15,30 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
         }
     cover_url = video_info['info']['pic']
     title = video_info['info']['title']
-    # 将汉字编译为utf-8
-    cover_name = f"{title}.jpg"
+    # 如果title没问题，则名称保持一致
+    # 这里注意区分title和cover_name的区别
+    cover_name = title
     cover = requests.get(cover_url, headers = headers).content
     # 下载cover到本地
-    with open(f"{cover_name}", 'wb') as f:
-        f.write(cover)
-        f.close()
+    try:
+        with open(f"{cover_name}", 'wb') as f:
+            f.write(cover)
+            f.close()
+    except:
+        cover_name = f"{video_info['info']['owner']['name']}{video_info['bvid']}"
+        print("cover_name为：", f"{cover_name}")
+        with open(f"{cover_name}.jpg", 'wb') as f:
+            f.write(cover)
+            f.close()
+            
     # 写入本地markdown，默认不写入，注意这里的传参
-    with open(f"{title}.md", "w") as f:
+    with open(f"{cover_name}.md", "w") as f:
         f.write(f"# {title}\n")
-        remote_file_path = upload_to_aliyun(cover_name, access_key_id, access_key_secret, bucket_name, endpoint)
-        f.write(f"![{title}.jpg]({remote_file_path})\n")
+        remote_file_path = upload_to_aliyun(f"{cover_name}.jpg", access_key_id, access_key_secret, bucket_name, endpoint)
+        f.write(f"![{cover_name}.jpg]({remote_file_path})\n")
         f.write(subtitle)
     # 通过删除的方法不留下写入
-    os.remove(f"{title}.md")
+    os.remove(f"{cover_name}.md")
     return remote_file_path
         
 def upload_to_aliyun(local_file_path, access_key_id, access_key_secret, bucket_name, endpoint, oss_folder = ''):

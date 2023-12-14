@@ -64,7 +64,7 @@ $ tree
    1. `bili_info`, `bili_tags`
    2. `subtitle_downloader`
 5. 视频`cover`上传至阿里云图床（后续本地markdown文件和notion中的cover都将使用阿里云图床的url）
-6. 读取的`subtitles`写入markdown文件，文件将默认保存在执行目录下
+6. 读取的`subtitles`写入markdown文件，文件将默认删除，想要保存在执行目录下请将`writein.py`中的`os.remove(f"{title}.md")`注释
 7. 上传至`notion`数据库
 
 ## workflow
@@ -195,7 +195,7 @@ if [ "$#" -eq 1 ]; then
 elif [ "$#" -eq 2 ] && [ "$2" = "p_num" ]; then
     python /path/to/main.py "$1" p_num
 else
-    echo "Usage: bilidl.sh bvid [p_num]"
+    echo "Usage: bilidl bvid [p_num]"
     exit 1
 fi
 ```

@@ -39,7 +39,14 @@ class VideoInfoDownloader:
     def download_info(self):
         info = self._get_info()
         tags = self._get_tags()
-        section = section_dict[info['tid']]
+        # print(info['tid'])
+        try:
+            section = section_dict[info['tid']]
+            print(section)
+        except Exception as e:
+            print(f"目前暂无分区信息，tid: {info['tid']}")
+            section = section_dict[229] # 没有分区信息就默认归类知识区
+            
         return {
             "info": info,
             "tags": tags,

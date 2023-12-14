@@ -46,6 +46,7 @@ class submit_to_notion:
         raise NotionConnectError("Notion 导入错误，请重新执行")
             
     def _generate_children(self, info: Dict, summarized_text: str, subtitle: str, remote_file_path):        
+        # 添加的所有内容实际上都是数组children中的一个个block，通过children.append(block)的方式添加
         children = [
             {
                 "object": "block",
@@ -93,6 +94,26 @@ class submit_to_notion:
                 }
             }
             children.append(bullet_item)
+        # 添加desc（作者自己添加的简介）
+        if info['desc']:
+            bullet_item = {
+                "object": "block",
+                "type": "bulleted_list_item",
+                "bulleted_list_item": {
+                    "rich_text": [
+                        {
+                            "type": "text",
+                            "text": {
+                                "content":  info['desc'],
+                                "link": None
+                            }
+                        }
+                    ]
+                }
+            }
+            children.append(bullet_item)
+            
+            
         # 添加subtitle
         subtitle_block = {
             "object": "block",
@@ -113,24 +134,24 @@ class submit_to_notion:
         # 如果subtitle的总字数超过2000，则拆分成多个block，递归添加
         if len(subtitle) > 2000:
             remaining_subtitle = subtitle[2000:]
-        while remaining_subtitle:
-            paragraph_block = {
-                "object": "block",
-                "type": "paragraph",
-                "paragraph": {
-                    "rich_text": [
-                        {
-                            "type": "text",
-                            "text": {
-                                "content": remaining_subtitle[:2000],  # 只取前2000个字符
-                                "link": None
+            while remaining_subtitle:
+                paragraph_block = {
+                    "object": "block",
+                    "type": "paragraph",
+                    "paragraph": {
+                        "rich_text": [
+                            {
+                                "type": "text",
+                                "text": {
+                                    "content": remaining_subtitle[:2000],  # 只取前2000个字符
+                                    "link": None
+                                }
                             }
-                        }
-                    ]
+                        ]
+                    }
                 }
-            }
-            children.append(paragraph_block)
-            remaining_subtitle = remaining_subtitle[2000:]
+                children.append(paragraph_block)
+                remaining_subtitle = remaining_subtitle[2000:]
             
         return children
 

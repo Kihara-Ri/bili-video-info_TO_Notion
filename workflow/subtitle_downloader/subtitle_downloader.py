@@ -56,8 +56,11 @@ class SubtitleDownloader:
             print("新cookie读取成功！")
             if subtitles:
                 return self._request_subtitle(subtitles[0])
+            else:
+                print(f"视频 https://bilibili.com/video/{self.bvid}/ 没有cc字幕")
+                return None
             
-        raise SubtitleDownloadError(f"下载失败，请检查该视频是否有cc字幕")
+        # raise SubtitleDownloadError(f"下载失败，请检查该视频是否有cc字幕")
     
     def _request_subtitle(self, url: str):
         response = requests.get(url)
@@ -71,9 +74,13 @@ class SubtitleDownloader:
             cookie = f.read().strip() # 去除换行符
         self.headers['cookie'] = cookie
         subtitle_list = self._get_subtitle(self._get_player_list()[self.p_num])
-        text_list = [x['content'] for x in subtitle_list]
-        text = '，'.join(text_list)
-        return text
+        if subtitle_list:
+            text_list = [x['content'] for x in subtitle_list]
+            text = '，'.join(text_list)
+            return text
+        else:
+            text = "该视频没有字幕"
+            return text
     
 class SubtitleDownloadError(Exception):
     pass

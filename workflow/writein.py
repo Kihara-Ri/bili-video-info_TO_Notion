@@ -22,13 +22,14 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
     with open(f"{cover_name}", 'wb') as f:
         f.write(cover)
         f.close()
-    # 本地markdown
+    # 写入本地markdown，默认不写入，注意这里的传参
     with open(f"{title}.md", "w") as f:
         f.write(f"# {title}\n")
         remote_file_path = upload_to_aliyun(cover_name, access_key_id, access_key_secret, bucket_name, endpoint)
         f.write(f"![{title}.jpg]({remote_file_path})\n")
         f.write(subtitle)
-        
+    # 通过删除的方法不留下写入
+    os.remove(f"{title}.md")
     return remote_file_path
         
 def upload_to_aliyun(local_file_path, access_key_id, access_key_secret, bucket_name, endpoint, oss_folder = ''):

@@ -3,8 +3,8 @@ from subtitle_downloader import SubtitleDownloader
 # from GPT_summary import GPT_summary
 from submit_to_notion import submit_to_notion
 from writein import writein
+from findpath import find_path
 import time
-    
 import argparse
 import json
 import os
@@ -24,11 +24,6 @@ def read_command_line_args():
             # args.summary_count
             )
     
-def find_path(file_name):
-    main_dir = os.path.dirname(os.path.realpath(__file__))
-    file_path = os.path.join(main_dir, file_name)
-    return file_path
-
 def main():
     settings_path = find_path("settings.json")
     cookie_path = find_path("cookie")

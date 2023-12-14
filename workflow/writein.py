@@ -2,6 +2,7 @@ import requests
 import oss2
 from urllib.parse import quote
 import os
+from findpath import find_path
 
 def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, bucket_name, endpoint):
     headers = {
@@ -21,7 +22,7 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
     cover = requests.get(cover_url, headers = headers).content
     # 下载cover到本地
     try:
-        with open(f"{cover_name}", 'wb') as f:
+        with open(f"{cover_name}.jpg", 'wb') as f:
             f.write(cover)
             f.close()
     except:
@@ -30,7 +31,6 @@ def writein(video_info, subtitle, cookie, access_key_id, access_key_secret, buck
         with open(f"{cover_name}.jpg", 'wb') as f:
             f.write(cover)
             f.close()
-            
     # 写入本地markdown，默认不写入，注意这里的传参
     with open(f"{cover_name}.md", "w") as f:
         f.write(f"# {title}\n")

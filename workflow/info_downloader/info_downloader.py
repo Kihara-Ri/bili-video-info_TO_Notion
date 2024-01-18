@@ -27,14 +27,18 @@ class VideoInfoDownloader:
             ("bvid", self.bvid),
         )
         response = requests.get(self.tags_api, params=params)
-        data = response.json()['data']
-        if data:
-            tags = [x['tag_name'] for x in data]
-            if len(tags) > 5:
-                tags = tags[:5]
-        else:
-            tags = []
-        return tags
+        try:
+            data = response.json()['data'] # 报错: KeyError: 'data'
+            if data:
+                tags = [x['tag_name'] for x in data]
+                if len(tags) > 5:
+                    tags = tags[:5]
+            else:
+                tags = []
+            return tags
+        except Exception as e:
+            print(f"获取tag信息失败，bvid: {self.bvid}")
+            return []
     
     def download_info(self):
         info = self._get_info()

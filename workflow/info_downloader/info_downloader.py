@@ -26,7 +26,7 @@ class VideoInfoDownloader:
         params = (
             ("bvid", self.bvid),
         )
-        response = requests.get(self.tags_api, params=params)
+        response = requests.get(self.tags_api, params=params, headers = self.headers)
         try:
             data = response.json()['data'] # 报错: KeyError: 'data'
             if data:
